@@ -1,0 +1,83 @@
+
+丸罰ゲームの途中
+########################
+#画像表示用
+#import tkinter
+#root = tkinter.Tk()
+#root.title("初めての画像表示")
+#canvas = tkinter.Canvas(root,width=400,height=600)
+#canvas.pack()
+#gazou = tkinter.PhotoImage(file="C:/Users/ayhm-/AppData/Local/Programs/Python/Python37/py_samples/Chapter6/iroha.png")
+#canvas.create_image(200,300,image=gazou)
+#root.mainloop()
+
+#gazou=tkinter.PhotoImage(file="C:/Users/81703/Documents/python_game/Chapter6/iroha.png")
+
+#root_dir = "C:/Users/81703/Documents/python_game/Chapter6/"
+#gazou=tkinter.PhotoImage(file=root_dir + "iroha.png")
+
+#C:\Users\ayhm-\AppData\Local\Programs\Python\Python37\py_samples\Chapter8
+########################
+
+import tkinter
+
+cursor_x = 0
+cursor_y = 0
+mouse_x = 0
+mouse_y = 0
+
+def mouse_move(e):
+    global mouse_x, mouse_y
+    mouse_x = e.x
+    mouse_y = e.y
+
+def game_main():
+    global cursor_x, cursor_y
+    if 0 <= mouse_x and mouse_x < 912 and 0 <= mouse_y and mouse_y < 768:
+        cursor_x = int((mouse_x-68)/249)
+        cursor_y = int((mouse_y)/209)
+    cvs.delete("CURSOR")
+    cvs.create_image(cursor_x*249+170, cursor_y*209+151, image=cursor, tag="CURSOR")
+    
+
+    
+
+    root.after(100, game_main)
+
+
+    
+
+root = tkinter.Tk()
+root.title("カーソルの表示")
+root.resizable(False, False)
+root.bind("<Motion>", mouse_move)
+cvs = tkinter.Canvas(root, width=912, height=768)
+cvs.pack()
+
+bg = tkinter.PhotoImage(file="C:/Users/ayhm-/AppData/Local/Programs/Python/Python37/py_samples/Chapter9/marubatu.PNG")
+cursor = tkinter.PhotoImage(file="C:/Users/ayhm-/AppData/Local/Programs/Python/Python37/py_samples/Chapter9/neko_cursor.png")
+cvs.create_image(456, 384, image=bg)
+game_main()
+root.mainloop()
+
+
+
+
+########################
+#画像表示用
+#import tkinter
+#root = tkinter.Tk()
+#root.title("初めての画像表示")
+#canvas = tkinter.Canvas(root,width=400,height=600)
+#canvas.pack()
+#gazou = tkinter.PhotoImage(file="C:/Users/ayhm-/AppData/Local/Programs/Python/Python37/py_samples/Chapter6/iroha.png")
+#canvas.create_image(200,300,image=gazou)
+#root.mainloop()
+
+#gazou=tkinter.PhotoImage(file="C:/Users/81703/Documents/python_game/Chapter6/iroha.png")
+
+#root_dir = "C:/Users/81703/Documents/python_game/Chapter6/"
+#gazou=tkinter.PhotoImage(file=root_dir + "iroha.png")
+
+#C:\Users\ayhm-\AppData\Local\Programs\Python\Python37\py_samples\Chapter8
+########################
