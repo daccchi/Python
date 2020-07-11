@@ -1,0 +1,17 @@
+########################
+#画像表示用
+#import tkinter
+#root = tkinter.Tk()
+#root.title("初めての画像表示")
+#canvas = tkinter.Canvas(root,width=400,height=600)
+#canvas.pack()
+#gazou = tkinter.PhotoImage(file="C:/Users/ayhm-/AppData/Local/Programs/Python/Python37/py_samples/Chapter6/iroha.png")
+#canvas.create_image(200,300,image=gazou)
+#root.mainloop()
+
+#gazou=tkinter.PhotoImage(file="C:/Users/81703/Documents/python_game/Chapter6/iroha.png")
+
+#root_dir = "C:/Users/81703/Documents/python_game/Chapter6/"
+#gazou=tkinter.PhotoImage(file=root_dir + "iroha.png")
+
+###########################
