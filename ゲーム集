@@ -1,0 +1,167 @@
+
+##すごろくゲーム
+import random
+
+pl_pos=1
+com_pos=1
+com2_pos=1
+com3_pos=1
+
+def banmen():
+	print("・"*(pl_pos-1)+"P"+"・"*(30-pl_pos)+"Goal")
+	print("・"*(com_pos-1)+"C"+"・"*(30-com_pos)+"Goal")
+	print("・"*(com2_pos-1)+"C2"+"・"*(30-com2_pos)+"Goal")
+	print("・"*(com3_pos-1)+"C3"+"・"*(30-com3_pos)+"Goal")
+
+
+
+
+
+
+banmen()
+print("すごろくスタート！！")
+
+while True:
+
+	input("Enterを押すと駒が進みます")
+	pl_pos=pl_pos+random.randint(1,6)
+
+	if pl_pos>30:
+		pl_pos=30
+
+	banmen()
+	if pl_pos ==30:
+		print("あなたの勝ちだ")
+		break
+
+
+	input("Enterを押すと駒が進みます")
+	com_pos=com_pos+random.randint(1,6)
+	if  com_pos>30:
+		com_pos=30
+
+	banmen()
+	if com_pos ==30:
+		print("CPUの勝ちだ")
+		break
+
+	input("Enterを押すと駒が進みます")
+	com2_pos=com2_pos+random.randint(1,6)
+
+	if com2_pos>30:
+		com2_pos=30
+
+	banmen()
+	if com2_pos ==30:
+		print("CPU2の勝ちだ")
+		break
+
+	input("Enterを押すと駒が進みます")
+	com3_pos=com3_pos+random.randint(1,6)
+
+	if com3_pos>30:
+		com3_pos=30
+
+	banmen()
+	if com3_pos ==30:
+		print("CPU3の勝ちだ")
+		break
+
+
+##ぬけたアルファベット
+import random
+import datetime
+
+ALP = ["a","b","c","d","e","f","g","h","i","j","k","l"]
+r= random.choice(ALP)
+
+alp = ""
+for i in ALP:
+    if i != r:
+        alp = alp + i
+
+print(alp)
+st=datetime.datetime.now()
+
+while True:
+    ans = input("抜けているアルファベットは？？")
+
+    if ans == r:
+        print("正解です")
+        et = datetime.datetime.now()
+        print(str((et-st).seconds)+"秒かかりました")
+        break
+    else:
+        print("負正解です")
+
+
+
+
+##3回勝負のじゃんけん
+
+import random
+
+
+
+win = 0
+lose = 0
+print("3回勝負のじゃんけんです！！")
+def janken():
+
+    global win
+    global lose
+
+
+    print("じゃんけん。。。（ぐう、ちょき、ぱあのいずれかを入力してください）")
+
+    jan = ["ぐー","ちょき","ぱー"]
+
+#プレイヤーの手
+    str  = input()
+
+#CPUの手
+    str2= random.choice(jan)
+
+    print("あなたは"+str)
+    print("CPUは"+str2)
+
+    if (str == "ぐう" and str2==jan[0]) or (str=="ちょき" and str2==jan[1]) or (str == "ぱあ" and str2==jan[2]):
+        print("あいこです")
+    elif (str == "ぐう" and str2==jan[1]) or (str == "ちょき" and str2==jan[2]) or (str == "ぱあ" and str2==jan[0]):
+        print("あなたの勝ちです")
+        win += 1
+    elif (str == "ぐう" and str2==jan[2]) or (str == "ちょき" and str2==jan[0]) or (str == "ぱあ" and str2==jan[1]):
+        print("CPUの勝ちです")
+        lose += 1
+    else:
+        print("入力にミスがあるよ")
+
+
+while True:
+    janken()
+    if win ==3 :
+        print("3勝"+str(lose)+"敗であなたの勝ちです")
+        break
+    if lose ==3:
+        print(str(win)+"勝"+str(lose)+"敗でCPUの勝ちです")
+        break
+
+
+
+########################
+#画像表示用
+#import tkinter
+#root = tkinter.Tk()
+#root.title("初めての画像表示")
+#canvas = tkinter.Canvas(root,width=400,height=600)
+#canvas.pack()
+#gazou = tkinter.PhotoImage(file="C:/Users/ayhm-/AppData/Local/Programs/Python/Python37/py_samples/Chapter6/iroha.png")
+#canvas.create_image(200,300,image=gazou)
+#root.mainloop()
+
+#gazou=tkinter.PhotoImage(file="C:/Users/81703/Documents/python_game/Chapter6/iroha.png")
+
+#root_dir = "C:/Users/81703/Documents/python_game/Chapter6/"
+#gazou=tkinter.PhotoImage(file=root_dir + "iroha.png")
+
+###########################
