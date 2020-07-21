@@ -1,0 +1,159 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+import math
+import random
+
+
+################
+# 素波の電界のEiの値が分からないので1にした
+# 初期位相φは考えないことにした。
+################
+
+###
+# 人が歩く速度　1m/s
+# 車が普通に走る速度 5m/s
+###
+
+N = 100
+v = 5
+
+
+fig = plt.figure()
+
+# 受信電力の時間波形
+f = 2 * 10**9 #周波数2GHz
+c = 3 * 10**8 #光の速度
+lamda = c/f #波長
+t = np.arange(0,100000,1)
+k = 2 * np.pi / lamda
+phi = random.uniform(0, 2*np.pi)
+
+
+# d = v * t
+Et = 0
+# X = 0
+# Y = 0
+for i in range(N):
+    theta = 2*np.pi * (i+1) / N
+    cos = np.cos(theta)
+    Ei = np.exp(complex(0,-1)*(k * v * t * cos + phi))
+    Et += Ei
+    # print(theta)
+    # X += Ei.real
+    # Y += Ei.imag 
+    
+# print(X)
+# print(Y)
+# Etの実部と虚部のそれぞれのシグマ
+# for i in range(N):
+
+# XY =0
+# for i in t:
+#     XY += (X[i]**2 + Y[i]**2)
+
+# print("アンサンブル平均: ",XY/100)
+
+# Pr = 1/2 * (XY/100)
+# print(Pr)
+
+gamma = Et**2 /2
+print(gamma)
+# P = 1/Pr * np.exp(-gamma/Pr)
+# plt.plot(t, np.log10(P))
+# plt.plot(gamma, np.log10(P))
+plt.plot(t,np.log10(gamma))
+plt.show()
+
+########
+# 累積分布
+########
+
+gamma_sorted = np.sort(np.log10(gamma))
+print(gamma_sorted)
+p = 1. * np.arange(len(gamma)) / (len(gamma) - 1)
+plt.plot(gamma_sorted, p)
+plt.show()
+
+
+
+
+
+#ここからゼミ課題2
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+import math
+import random
+
+
+
+###########################################################
+#
+# E = E1 + E2 = E0 * np.exp(complex(0,-1) * k * l1) / l1 + Rtm*E0 * np.exp(complex(0,-1) * k * l2) / l2
+#
+###########################################################
+
+
+d = np.arange(10,10000,1)
+
+
+E0 = 1
+f = 2000 * 10**6 #周波数2000MHz
+c = 3 * 10**8 #光の速度
+lamda = c/f #波長
+k = 2 * np.pi / lamda
+
+ii = 8.85*10**(-12)
+
+
+hb = 5 #送信アンテナの高さ（ｍ）
+hm = 1.5#受信アンテナの高さ（ｍ）
+ij = ipushironj = 15 * ii
+
+# ↑確認済
+
+myu0 = myu1 = 1
+siguma0 = 0
+siguma1 = 0.005
+
+# ↑確認済
+
+#複素数を絶対値にした（complex(0,-1)=1）
+#n01=np.sqrt(myu0/myu1)*np.sqrt((ij-1*(siguma1)/(2*(np.pi)*f)) / (ii-1*siguma0/2* np.pi*f))
+
+n01=np.sqrt(myu0/myu1)*np.sqrt((ij+complex(0,-1)*(siguma1)/(2*(np.pi)*f)) / (ii+complex(0,-1)*siguma0/2* np.pi*f))
+
+
+l1 = np.sqrt((hb-hm)**2 + d**2)
+l2 = np.sqrt(d**2+(hb+hm)**2)
+
+cos = (hb + hm) / l2
+sin = d / l2
+
+
+
+Rtm = myu0*n01**2*cos-myu1*np.sqrt(n01**2-sin**2) / myu0*n01**2*cos+myu1*np.sqrt(n01**2-sin**2)
+
+
+
+E =E0*np.exp(complex(0,-1)*k*l1)/l1+Rtm* E0*np.exp(complex(0,-1)*k*l2)/ l2
+
+Pr = np.log10(E**2)
+
+plt.plot(d, Pr)
+
+ax = plt.gca()
+ax.spines['top'].set_color('none')
+
+ax.set_xscale('log') #x軸をlogスケール表示
+
+#plt.title()
+#plt.title('グラフタイトル') 
+plt.title('logD-Pr') 
+plt.xlabel('d',fontsize=18)
+plt.ylabel('Pr',fontsize=18)
+plt.grid(which="both")
+plt.show()
