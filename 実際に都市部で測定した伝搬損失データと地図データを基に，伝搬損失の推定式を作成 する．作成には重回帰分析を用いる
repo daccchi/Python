@@ -1,0 +1,58 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.ticker as tick
+
+df = pd.read_excel("d-loss.xlsx")
+
+# ラベル毎の値を取り出し
+d = df['distance[m]'].values
+loss = df['loss[dB]'].values
+print(loss[0])
+print(d[0])
+road_width = df['road width[m]'].values
+road_angle = df['road angle[deg]'].values
+
+d2 = df['distance2[m]'].values #基地局から建物の頂点までの距離（同じ建物にそれぞれ4点）
+print(d2[2000])
+h = df['h[m]'].values #ビルの高さ
+avg_hs = [] #10m付近のビルの高さの平均を格納するリスト
+
+for i in range(len(d)):
+    sum_h = 0
+    count = 0
+    for j in range(len(d2)):
+        if d[i]-10 <= d2[j] <= d[i]+10 :
+            sum_h += h[j+1]
+            count += 1
+    if 0 <count:
+        avg_h = sum_h / count
+        avg_hs.append(avg_h)
+# print(avg_hs)
+
+
+#####
+# パラメータは以下の通り
+# ・基地局からの距離
+# ・道路幅(road_width)
+# ・道路角(road_angle)
+# ・受信点から10m周辺の建物高の平均
+#####
+
+
+
+# グラフ化
+fig = plt.figure()
+ax = fig.add_subplot(111)
+ax.scatter(d,loss)
+ax.set_xlabel('d[m]')
+ax.set_ylabel('loss[dB]')
+plt.legend(loc='best')
+# x軸に5刻みにで小目盛り(minor locator)表示
+plt.gca().xaxis.set_minor_locator(tick.MultipleLocator(50))
+# y軸に0.1刻みにで小目盛り(minor locator)表示
+plt.gca().yaxis.set_minor_locator(tick.MultipleLocator(2))
+# 小目盛りに対してグリッド表示
+plt.grid(which='minor')
+ax.set_xlim([0,1000])
+ax.set_ylim([80,150])
+plt.show()
