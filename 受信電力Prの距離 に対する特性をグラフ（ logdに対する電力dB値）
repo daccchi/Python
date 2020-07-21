@@ -1,0 +1,70 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import cmath
+
+f = 2000 * 10**6 #Hz
+c = 3 * 10**8 #光の速度
+lamda = c/f #波長
+
+omega = 2*np.pi*f
+k = 2 * np.pi / lamda
+
+d = np.arange(1,1000,1) #送受信アンテナ間の距離 m
+hb = 5 #m
+hm = 1.5 #m
+
+# theta = np.tan(d / (hb+hm))**(-1)
+
+l1 = np.sqrt(d**2 + (hb-hm)**2) #直接波
+l2 = np.sqrt(d**2 + (hb+hm)**2) #反射波
+
+epsi = 8.85*10**(-12)
+epsj = 15*epsi
+
+n01 = np.sqrt(complex(epsj, -0.005/omega) / epsi)
+# R = (n01**2 * np.cos(theta) - np.sqrt(n01**2 - np.sin(theta)**2))/(n01**2 * np.cos(theta) + np.sqrt(n01**2 - np.sin(theta)**2))
+
+######ループで試してみたやつ
+# E1 = np.zeros(1000)
+# E2 = np.zeros(1000)
+# E = np.zeros(1000)
+# for i in d:
+#     # print(i)
+#     theta = np.tan(i+1 / (hb+hm))**(-1)
+#     # print(theta)
+#     E1[i] = np.exp(complex(0, -1*k*l1[i])) / l1[i]
+#     R = (n01**2 * np.cos(theta) - np.sqrt(n01**2 - np.sin(theta)**2))/(n01**2 * np.cos(theta) + np.sqrt(n01**2 - np.sin(theta)**2))
+#     E2[i] = R * np.exp(complex(0, -1*k*l2[i])) / l2[i]
+#     # E1 = complex(np.cos(k*l1) ,-1*np.sin(k*l1)) / l1
+#     # E1 = np.exp(complex(0, -1*k*l1)) / l1
+#     # E2 = R * complex(np.cos(k*l2) ,-1*np.sin(k*l2)) / l2
+#     # E2 = R * np.exp(complex(0, -1*k*l2)) / l2
+#     E[i] = E1 + E2
+
+E1complex = []
+E2complex = []
+for i in range(0,len(d)):
+    E1complex.append( complex(0, -1*k*l1[i]) )
+    E2complex.append( complex(0, -1*k*l2[i]) )
+
+
+theta = np.tan(d / (hb+hm))**(-1)
+R = (n01**2 * np.cos(theta) - np.sqrt(n01**2 - np.sin(theta)**2))/(n01**2 * np.cos(theta) + np.sqrt(n01**2 - np.sin(theta)**2))
+E1 = np.exp(E1complex) / l1
+E2 = R * np.exp(E2complex) / l2
+E = E1 + E2
+
+Pr = np.log10(E**2)
+print(Pr)
+
+plt.plot(d, Pr)
+ax = plt.gca()
+ax.spines['top'].set_color('none')
+
+ax.set_xscale('log') #x軸をlogスケール表示
+
+plt.title('logD-Pr') 
+plt.xlabel('d',fontsize=18)
+plt.ylabel('Pr',fontsize=18)
+plt.grid(which="both")
+plt.show()
